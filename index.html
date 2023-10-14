@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Travel Booking System</title>
+        
+    </head>
+
+ <body>
+   
+        <header >
+            <h1 style="color: #664caf;">Travel Booking System</h1>
+        </header>
+            <nav>
+                
+                <button id="trackTicketBtn" style="margin-left: 80%;">Track Ticket</button>
+                <div id="ticketModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Ticket Tracking</h2>
+                        <label for="bookingId">Booking ID:</label>
+                        <input type="text" id="bookingId" placeholder="Enter Booking ID">
+                        <br>
+                        <label for="mobileNumber">Mobile Number:</label>
+                        <input type="text" id="mobileNumber" placeholder="Enter Mobile Number">
+                        <br>
+                        <button onclick="trackTicket()">Track</button>
+                        <div id="ticketDetails"></div>
+                    </div>
+                </div>
+                
+            <button id="loginSignupBtn">Login/Signup</button>
+            <div id="formModal" class="form-modal">
+                <div class="form-modal-content">
+                    <span class="close">&times;</span>
+                    <div class="tab active" id="loginTab">
+                        <h2>Login</h2>
+                        <label for="loginEmailMobile">Email/Mobile:</label>
+                        <input type="text" id="loginEmailMobile" placeholder="Enter Email/Mobile">
+                        <br>
+                        <label for="loginPassword">Password:</label>
+                        <input type="password" id="loginPassword" placeholder="Enter Password">
+                        <br>
+                        <button onclick="login()">Login</button>
+                        <p>Don't have an account? <span class="tab-button" onclick="showSignupTab()">Sign Up</span></p>
+                    </div>
+                    <div class="tab" id="signupTab">
+                        <h2>Sign Up</h2>
+                        <label for="signupEmailMobile">Email/Mobile:</label>
+                        <input type="text" id="signupEmailMobile" placeholder="Enter Email/Mobile">
+                        <br>
+                        <label for="signupPassword">Password:</label>
+                        <input type="password" id="signupPassword" placeholder="Enter Password">
+                        <br>
+                        <button onclick="signup()">Sign Up</button>
+                        <p>Already have an account? <span class="tab-button" onclick="showLoginTab()">Login</span></p>
+                    </div>
+                </div>
+            </div>
+
+            
+            </nav>
+   <div class="backpic">
+    <section class="logo" style="margin-right: 80%;">
+        <img src="logo1.jpg" alt="Travel Company Logo" style="width: 90%; border:10px solid ; border-radius: 40%;">
+    </section>
+    <div class="container">
+        <form action="booking_process.php" method="post">
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" name="destination" required>
+
+            <label for="departureDate">Departure Date:</label>
+            <input type="date" id="departureDate" name="departureDate" required>
+
+            <label for="returnDate">Return Date:</label>
+            <input type="date" id="returnDate" name="returnDate" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="passengers">Number of Passengers:</label>
+            <input type="number" id="passengers" name="passengers" required>
+
+            <label for="paymentMethod">Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="creditCard">Credit Card</option>
+                <option value="debitCard">Debit Card</option>
+                <option value="paypal">PayPal</option>
+            </select>
+
+            <input type="submit" value="Book Now">
+        </form>
+    </div> 
+    <section class="bus-booking">
+        <h2>Bus Booking</h2>
+        <div class="bus-options">
+            <button class="bus-btn" onclick="showBusDetails('APSRTC')">APSRTC</button>
+            <button class="bus-btn" onclick="showBusDetails('KSRTC')">KSRTC</button>
+            <button class="bus-btn" onclick="showBusDetails('TSRTC')">TSRTC</button>
+            <button class="bus-btn" onclick="showBusDetails('Volvo')">Volvo</button>
+            <button class="bus-btn" onclick="showBusDetails('Deluxe')">Deluxe</button>
+            <button class="bus-btn" onclick="showBusDetails('UltraDeluxe')">Ultra Deluxe</button>
+            <button class="bus-btn" onclick="showBusDetails('SleepCoach')">Sleep Coach</button>
+        </div>
+        <div class="bus-details" id="busDetails"></div>
+    </section>
+ </div>
+    <section class="offers">
+        <h2>Special Offers</h2>
+        <p>Discover exclusive travel deals and discounts</p>
+        <div class="offer">
+           <img src="./offer1.jpg" style="width: 250px;height: 300px;">
+           <img src="./offer2.jpg" style="width: 250px;height: 300px;">
+           <img src="./offer3.png" style="width: 250px;height: 300px;">
+           <img src="./offer4.png" style="width: 250px;height: 300px;">
+           <img src="./offer5.jpg" style="width: 250px;height: 300px;">
+        </div>
+    </section>
+    
+    <style>
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        select {
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .form-modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+        .form-modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+        .tab {
+            display: none;
+        }
+        .tab.active {
+            display: block;
+        }
+        .tab-button {
+            cursor: pointer;
+        }
+        .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgb(0,0,0);
+                background-color: rgba(0,0,0,0.4);
+                padding-top: 60px;
+            }
+            .modal-content {
+                background-color: #fefefe;
+                margin: 5% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+ .bus-options {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .bus-btn {
+            margin: 0 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .bus-details {
+            margin-top: 20px;
+        }
+        .offers{
+            width: 100%;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            margin: 10px solid;
+        }
+
+        header {
+            background: #f3d8d8;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav {
+            background: #f3d8d8;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+
+        section {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .logo {
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        .options {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .option {
+            margin: 0 20px;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .backpic{
+            background-image: url(back1.jpg);
+        }
+    </style>
+
+     <script>
+        var formModal = document.getElementById('formModal');
+        var loginSignupBtn = document.getElementById('loginSignupBtn');
+        var closeBtn = formModal.getElementsByClassName('close')[0];
+        loginSignupBtn.onclick = function () {
+            formModal.style.display = 'block';
+            showLoginTab(); 
+        }
+        closeBtn.onclick = function () {
+            formModal.style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == formModal) {
+                formModal.style.display = 'none';
+            }
+        }
+
+        function showSignupTab() {
+            document.getElementById('loginTab').classList.remove('active');
+            document.getElementById('signupTab').classList.add('active');
+        }
+
+        function showLoginTab() {
+            document.getElementById('signupTab').classList.remove('active');
+            document.getElementById('loginTab').classList.add('active');
+        }
+
+        function login() {
+            alert('Login successful!'); 
+        }
+
+        function signup() {
+            alert('Sign up successful!');
+        }
+                var modal = document.getElementById('ticketModal');
+
+                var btn = document.getElementById('trackTicketBtn');
+
+                var span = document.getElementsByClassName('close')[0];
+
+                btn.onclick = function() {
+                    modal.style.display = 'block';
+                }
+
+                span.onclick = function() {
+                    modal.style.display = 'none';
+                }                
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                }
+
+                function trackTicket() {
+                    var bookingId = document.getElementById('bookingId').value;
+                    var mobileNumber = document.getElementById('mobileNumber').value;
+                    var ticketDetailsData = 'Ticket details will be fetched here based on bookingId and mobileNumber.';
+                    document.getElementById('ticketDetails').innerText = ticketDetailsData;
+                }
+        function showBusDetails(busType) {
+            var busDetailsElement = document.getElementById('busDetails');
+            var busDetails = '';
+
+            switch (busType) {
+                case 'APSRTC':
+                    busDetails = 'APSRTC buses available: Regular, Express, Deluxe, Garuda';
+                    break;
+                case 'KSRTC':
+                    busDetails = 'KSRTC buses available: Airavat, Airavat Club Class, Airavat Bliss';
+                    break;
+                case 'TSRTC':
+                    busDetails = 'TSRTC buses available: Vajra, Garuda Plus, Rajadhani Express';
+                    break;
+                case 'Volvo':
+                    busDetails = 'Volvo buses available: Volvo Multi-Axle, Volvo Sleeper';
+                    break;
+                case 'Deluxe':
+                    busDetails = 'Deluxe buses available: Non-AC Deluxe, AC Deluxe';
+                    break;
+                case 'UltraDeluxe':
+                    busDetails = 'Ultra Deluxe buses available: Ultra Deluxe Non-AC, Ultra Deluxe AC';
+                    break;
+                case 'SleepCoach':
+                    busDetails = 'Sleep Coach buses available: Sleeper Berth, Semi-Sleeper Berth';
+                    break;
+                default:
+                    busDetails = 'No information available for this bus type.';
+                    break;
+            }
+
+            busDetailsElement.innerText = busDetails;
+        }
+    </script>
+    
+    <footer>
+        <p>&copy; 2023 Travel Booking System. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
